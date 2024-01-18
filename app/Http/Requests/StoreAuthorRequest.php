@@ -13,7 +13,7 @@ class StoreAuthorRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class StoreAuthorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255|not_regex:/<[a-z][\s\S]*>/i',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => '著者名は必須です。',
+            'name.string' => '著者名は文字列である必要があります。',
+            'name.max' => '著者名は最大255文字までです。',
+            'name.not_regex' => 'HTMLタグは許可されていません。'
         ];
     }
 }
