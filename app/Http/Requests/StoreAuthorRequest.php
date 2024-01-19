@@ -24,7 +24,7 @@ class StoreAuthorRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255|not_regex:/<[a-z][\s\S]*>/i',
+            'authorName' => 'required|string|max:255|not_regex:/<[a-z][\s\S]*>/i',
         ];
     }
 
@@ -34,10 +34,10 @@ class StoreAuthorRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => '著者名は必須です。',
-            'name.string' => '著者名は文字列である必要があります。',
-            'name.max' => '著者名は最大255文字までです。',
-            'name.not_regex' => 'HTMLタグは許可されていません。'
+            'authorName.required' => '著者名は必須です。',
+            'authorName.string' => '著者名は文字列である必要があります。',
+            'authorName.max' => '著者名は最大255文字までです。',
+            'authorName.not_regex' => 'HTMLタグは許可されていません。'
         ];
     }
 }

@@ -18,7 +18,7 @@ class AuthorResource extends JsonResource
         ];
 
         if ($this->relationLoaded('books')) {
-            $data['books'] = BookResource::collection($this->books);
+            $data['books'] = BookWithRelationsIdsResource::collection($this->books);
         }
 
         if ($this->relationLoaded('publishers')) {

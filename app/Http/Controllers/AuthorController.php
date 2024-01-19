@@ -33,7 +33,7 @@ class AuthorController extends Controller
      */
     public function store(StoreAuthorRequest $request)
     {
-        $this->authorService->storeRegister($request->name);
+        $this->authorService->storeRegister($request->authorName);
         return response(null, 201);
     }
 
@@ -54,7 +54,7 @@ class AuthorController extends Controller
      */
     public function update(UpdateAuthorRequest $request, Author $author)
     {
-        $this->authorService->updateAuthor($request->name, $author);
+        $this->authorService->updateAuthor($request->authorName, $author);
         return response(null, 204);
     }
 

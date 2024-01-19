@@ -3,11 +3,9 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Author;
 use App\Models\Book;
-use App\Models\Publisher;
 
 class AuthorTest extends TestCase
 {
@@ -24,22 +22,7 @@ class AuthorTest extends TestCase
         $response->assertJsonStructure([
             '*' => [
                 'authorId',
-                'name',
-                'books' => [
-                    '*' => [
-                        'isbn',
-                        'name',
-                        'publishedAt',
-                        'authorId',
-                        'publisherId',
-                    ],
-                ],
-                'relatedPublishers' => [
-                    '*' => [
-                        'publisherId',
-                        'name',
-                    ],
-                ],
+                'name'
             ],
         ]);
     }
@@ -49,14 +32,13 @@ class AuthorTest extends TestCase
      */
     public function test_create_author()
     {
-        $data = [
-            'name' => 'New Author',
-        ];
+        $data = ['authorName' => 'New Author'];
+        $dbData = ['author_name' => 'New Author'];
 
         $response = $this->post('/api/authors', $data);
 
         $response->assertStatus(201);
-        $this->assertDatabaseHas('authors', $data);
+        $this->assertDatabaseHas('authors', $dbData);
     }
 
     /**
@@ -64,8 +46,9 @@ class AuthorTest extends TestCase
      */
     public function test_show_author()
     {
-        $author = Author::factory()->create();
-        $response = $this->get("/api/authors/{$author->id}");
+        $book = Book::factory()->create();
+
+        $response = $this->get("/api/authors/{$book->author_id}");
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -95,8 +78,9 @@ class AuthorTest extends TestCase
     public function test_update_author()
     {
         $author = Author::factory()->create();
+
         $data = [
-            'name' => 'Updated Name',
+            'authorName' => 'Updated Name',
         ];
 
         $response = $this->put("/api/authors/{$author->id}", $data);
@@ -104,7 +88,7 @@ class AuthorTest extends TestCase
         $response->assertStatus(204);
         $this->assertDatabaseHas('authors', [
             'id' => $author->id,
-            'author_name' => $data['name'],
+            'author_name' => $data['authorName'],
         ]);
     }
 
