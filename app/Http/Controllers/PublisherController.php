@@ -18,7 +18,7 @@ class PublisherController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * @return PublisherResource
      */
     public function index()
     {
@@ -38,7 +38,7 @@ class PublisherController extends Controller
 
     /**
      * @param  \App\Models\Publisher  $publisher
-     * @return \Illuminate\Http\Response
+     * @return PublisherResource
      */
     public function show(Publisher $publisher)
     {
