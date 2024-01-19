@@ -20,8 +20,22 @@ class Author extends Model
         'author_name',
     ];
 
+    public $timestamps = false; 
+
     public function books()
     {
         return $this->hasMany(Book::class, 'author_id');
+    }
+
+    public function publishers()
+    {
+        return $this->hasManyThrough(
+            Publisher::class, 
+            Book::class, 
+            'author_id', 
+            'id', 
+            'id', 
+            'publisher_id' 
+        );
     }
 }
