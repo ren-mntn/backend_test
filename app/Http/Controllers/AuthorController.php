@@ -19,7 +19,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * @return ItemShowResource
+     * @return AuthorResource
      */
     public function index()
     {
@@ -39,7 +39,7 @@ class AuthorController extends Controller
 
     /**
      * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\ItemShowResource
+     * @return AuthorResource
      */
     public function show(Author $author)
     {
