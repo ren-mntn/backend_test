@@ -23,6 +23,8 @@ class Book extends Model
         'published_at'
     ];
 
+    public $timestamps = false; 
+
     public function author()
     {
         return $this->belongsTo(Author::class, 'author_id');
