@@ -20,6 +20,7 @@ class Book extends Model
     protected $primaryKey = 'isbn';
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $dates = ['published_at'];
 
     protected $fillable = [
         'isbn',
