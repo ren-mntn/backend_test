@@ -3,27 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Services\BookService;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Resources\BookResource;
 
 class BookController extends Controller
 {
-    protected $bookService;
-
-    public function __construct(BookService $bookService)
-    {
-        $this->bookService = $bookService;
-    }
-
     /**
      * @return BookResource
      */
     public function index()
     {
-        $books = $this->bookService->getBooks();
-        return BookResource::collection($books);
+        return BookResource::collection(Book::all());
     }
 
     /**
@@ -32,8 +23,9 @@ class BookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-        $this->bookService->storeRegister($request);
-        return response(null, 201);
+        $bookData = $request->validated();
+        $book = Book::createBook($bookData);
+        return response($book, 201);
     }
 
     /**
@@ -42,7 +34,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        $bookDetail = $this->bookService->getBookDetail($book);
+        $bookDetail = $book->load(['author', 'publisher']);
         return  new BookResource($bookDetail);
     }
 
@@ -53,8 +45,9 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
-        $this->bookService->updateBook($request, $book);
-        return response(null, 204);
+        $updatedData = $request->validated();
+        $updatedBook = $book->updateBook($updatedData);
+        return response($updatedBook, 204);
     }
 
     /**
@@ -63,7 +56,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        $this->bookService->deleteBook($book);
+        $book->delete();
         return response(null, 204);
     }
 }
