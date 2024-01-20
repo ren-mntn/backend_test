@@ -17,9 +17,9 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            'isbn' => $this->faker->isbn13,
+            'isbn' => $this->faker->unique()->isbn13, 
             'book_name' => $this->faker->sentence,
-            'published_at' => $this->faker->date('Y-m-d\TH:i:s.u', 'now'),
+            'published_at' => $this->faker->date('Y-m-d', 'now'),
             'author_id' => Author::factory(),
             'publisher_id' => Publisher::factory(),
         ];
