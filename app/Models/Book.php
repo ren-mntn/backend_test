@@ -33,21 +33,21 @@ class Book extends Model
     public $timestamps = false;
 
     /**
-     * @param array $data 書籍のデータ
+     * @param array $bookData
      * @return self 作成された書籍インスタンス
      */
-    public static function createBook(array $data)
+    public static function createBook(array $bookData)
     {
-        return self::create($data);
+        return self::create($bookData);
     }
 
     /**
-     * @param array $data 更新する書籍のデータ
+     * @param array $bookData
      * @return self 更新された書籍インスタンス
      */
-    public function updateBook(array $data)
+    public function updateBook(array $bookData)
     {
-        $this->fill($data);
+        $this->fill($bookData);
         $this->save();
         return $this;
     }
