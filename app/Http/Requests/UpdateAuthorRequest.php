@@ -20,7 +20,7 @@ class UpdateAuthorRequest extends FormRequest
     public function rules()
     {
         return [
-            'authorName' => 'required|string|max:255|not_regex:/<[a-z][\s\S]*>/i',
+            'author_name' => 'required|string|max:255|not_regex:/<[a-z][\s\S]*>/i',
         ];
     }
 
@@ -30,10 +30,10 @@ class UpdateAuthorRequest extends FormRequest
     public function messages()
     {
         return [
-            'authorName.required' => '著者名は必須です。',
-            'authorName.string' => '著者名は文字列である必要があります。',
-            'authorName.max' => '著者名は最大255文字までです。',
-            'authorName.not_regex' => 'HTMLタグは許可されていません。'
+            'author_name.required' => '著者名は必須です。',
+            'author_name.string' => '著者名は文字列である必要があります。',
+            'author_name.max' => '著者名は最大255文字までです。',
+            'author_name.not_regex' => 'HTMLタグは許可されていません。'
         ];
     }
 }
