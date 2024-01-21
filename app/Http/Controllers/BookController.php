@@ -45,8 +45,8 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
-        $updatedData = $request->validated();
-        $updatedBook = $book->updateBook($updatedData);
+        $bookData = $request->validated();
+        $updatedBook = $book->updateBook($bookData);
         return response($updatedBook, 200);
     }
 
