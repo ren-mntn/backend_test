@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('publishers', function (Blueprint $table) {
             $table->id();
-            $table->string('publisher_name',100);
+            $table->string('publisher_name', 255)->unique();
         });
     }
 
