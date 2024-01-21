@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
-use App\Http\Requests\StoreAuthorRequest;
-use App\Http\Requests\UpdateAuthorRequest;
+use App\Http\Requests\AuthorRequest;
 use App\Http\Resources\AuthorResource;
 
 class AuthorController extends Controller
@@ -18,10 +17,10 @@ class AuthorController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\StoreAuthorRequest  $request
+     * @param  \App\Http\Requests\AuthorRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAuthorRequest $request)
+    public function store(AuthorRequest $request)
     {
         $authorData = $request->validated();
         $author = Author::createAuthor($authorData);
@@ -39,11 +38,11 @@ class AuthorController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\UpdateAuthorRequest  $request
+     * @param  \App\Http\Requests\AuthorRequest  $request
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAuthorRequest $request, Author $author)
+    public function update(AuthorRequest $request, Author $author)
     {
         $authorData = $request->validated();
         $updatedAuthor = $author->updateAuthor($authorData);
