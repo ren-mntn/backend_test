@@ -20,7 +20,27 @@ class Author extends Model
         'author_name',
     ];
 
-    public $timestamps = false; 
+    public $timestamps = false;
+
+    /**
+     * @param array $validatedData
+     * @return self 作成された書籍インスタンス
+     */
+    public static function createAuthor(array $authorData)
+    {
+        return self::create($authorData);
+    }
+
+    /**
+     * @param array $authorName
+     * @return self 更新された書籍インスタンス
+     */
+    public function updateAuthor(array $authorData)
+    {
+        $this->fill($authorData);
+        $this->save();
+        return $this;
+    }
 
     public function books()
     {
@@ -30,12 +50,12 @@ class Author extends Model
     public function publishers()
     {
         return $this->hasManyThrough(
-            Publisher::class, 
-            Book::class, 
-            'author_id', 
-            'id', 
-            'id', 
-            'publisher_id' 
+            Publisher::class,
+            Book::class,
+            'author_id',
+            'id',
+            'id',
+            'publisher_id'
         );
     }
 }

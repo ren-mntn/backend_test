@@ -32,13 +32,12 @@ class AuthorTest extends TestCase
      */
     public function test_create_author()
     {
-        $data = ['authorName' => 'New Author'];
-        $dbData = ['author_name' => 'New Author'];
+        $data = ['author_name' => 'New Author'];
 
         $response = $this->post('/api/authors', $data);
 
         $response->assertStatus(201);
-        $this->assertDatabaseHas('authors', $dbData);
+        $this->assertDatabaseHas('authors', $data);
     }
 
     /**
@@ -80,15 +79,15 @@ class AuthorTest extends TestCase
         $author = Author::factory()->create();
 
         $data = [
-            'authorName' => 'Updated Name',
+            'author_name' => 'Updated Name',
         ];
 
         $response = $this->put("/api/authors/{$author->id}", $data);
 
-        $response->assertStatus(204);
+        $response->assertStatus(200);
         $this->assertDatabaseHas('authors', [
             'id' => $author->id,
-            'author_name' => $data['authorName'],
+            'author_name' => $data['author_name'],
         ]);
     }
 
