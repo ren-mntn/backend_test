@@ -110,4 +110,80 @@ class PublisherTest extends TestCase
             ]);
         }
     }
+
+    /**
+     * 必須フィールドのテスト
+     * @covers \App\Http\Controllers\PublisherController::store
+     */
+    public function test_create_publisher_without_name()
+    {
+        $response = $this->postJson('/api/publishers', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['publisher_name']);
+        $response->assertJsonFragment([
+            'publisher_name' => ['出版社名は必須です。']
+        ]);
+    }
+
+    /**
+     * 最大文字数制限のテスト
+     * @covers \App\Http\Controllers\PublisherController::store
+     */
+    public function test_create_publisher_with_long_name()
+    {
+        $data = ['publisher_name' => str_repeat('a', 256)];
+
+        $response = $this->postJson('/api/publishers', $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['publisher_name']);
+        $response->assertJsonFragment([
+            'publisher_name' => ['出版社名は最大255文字までです。']
+        ]);
+    }
+
+    /**
+     * 文字列型のテスト
+     * @covers \App\Http\Controllers\PublisherController::store
+     */
+    public function test_create_publisher_with_non_string_name()
+    {
+        $data = ['publisher_name' => 12345];
+
+        $response = $this->postJson('/api/publishers', $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['publisher_name']);
+        $response->assertJsonFragment([
+            'publisher_name' => ['出版社名は文字列である必要があります。']
+        ]);
+    }
+
+    /**
+     * 存在しないID
+     * @covers \App\Http\Controllers\PublisherController::update
+     */
+    public function test_update_nonexistent_publisher()
+    {
+        $nonExistentPublisherId = 9999;
+        $data = ['publisher_name' => 'Updated Name'];
+
+        $response = $this->put("/api/publishers/{$nonExistentPublisherId}", $data);
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * 存在しないID
+     * @covers \App\Http\Controllers\PublisherController::delete
+     */
+    public function test_delete_nonexistent_publisher()
+    {
+        $nonExistentPublisherId = 9999;
+
+        $response = $this->delete("/api/publishers/{$nonExistentPublisherId}");
+
+        $response->assertStatus(404);
+    }
 }

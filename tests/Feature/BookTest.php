@@ -135,4 +135,74 @@ class BookTest extends TestCase
         $this->assertDatabaseHas('authors', ['id' => $this->book->author_id]);
         $this->assertDatabaseHas('publishers', ['id' => $this->book->publisher_id]);
     }
+
+    /**
+     * 必須フィールドのテスト
+     * @covers \App\Http\Controllers\BookController::store
+     */
+    public function test_create_book_without_required_fields()
+    {
+        $response = $this->postJson('/api/books', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['isbn', 'book_name', 'published_at', 'author_id', 'publisher_id']);
+    }
+
+    /**
+     * ISBN ユニーク性のテスト
+     * @covers \App\Http\Controllers\BookController::store
+     */
+    public function test_create_book_with_existing_isbn()
+    {
+        $existingBook = Book::factory()->create();
+
+        $data = $this->createBookData(['isbn' => $existingBook->isbn]);
+
+        $response = $this->postJson('/api/books', $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['isbn']);
+    }
+
+    /**
+     * 存在しない著者ID、出版社ID
+     * @covers \App\Http\Controllers\BookController::store
+     */
+    public function test_create_book_with_nonexistent_author_publisher()
+    {
+        $data = $this->createBookData(['author_id' => 9999, 'publisher_id' => 9999]);
+
+        $response = $this->postJson('/api/books', $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['author_id', 'publisher_id']);
+    }
+
+    /**
+     * 存在しないID
+     * @covers \App\Http\Controllers\BookController::update
+     */
+    public function test_update_nonexistent_book()
+    {
+        $nonExistentBookIsbn = '9999-9999';
+        $data = $this->createBookData();
+
+        $response = $this->put("/api/books/{$nonExistentBookIsbn}", $data);
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * 存在しないID
+     * @covers \App\Http\Controllers\BookController::delete
+     */
+    public function test_delete_nonexistent_book()
+    {
+        $nonExistentBookIsbn = '9999-9999';
+
+        $response = $this->delete("/api/books/{$nonExistentBookIsbn}");
+
+        $response->assertStatus(404);
+    }
+
 }
