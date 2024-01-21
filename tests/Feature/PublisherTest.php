@@ -186,4 +186,23 @@ class PublisherTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    /**
+     * 重複した出版社名のテスト
+     * @covers \App\Http\Controllers\PublisherController::store
+     */
+    public function test_create_publisher_with_duplicate_name()
+    {
+        $existingPublisher = Publisher::factory()->create(['publisher_name' => 'Existing Publisher']);
+
+        $data = ['publisher_name' => $existingPublisher->publisher_name];
+
+        $response = $this->postJson('/api/publishers', $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['publisher_name']);
+        $response->assertJsonFragment([
+            'publisher_name' => ['この出版社名は既に使用されています。']
+        ]);
+    }
 }
