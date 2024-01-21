@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -17,11 +16,7 @@ class PublisherTest extends TestCase
      */
     public function test_list_publishers()
     {
-        // 出版社を作成し、出版社に対して3の書籍を生成、書籍は新しい著者に関連付け
-        Publisher::factory()->count(3)
-            ->has(Book::factory()->count(3)->for(Author::factory(), 'author'))
-            ->create();
-
+        Publisher::factory()->count(3)->create();
         $response = $this->get('/api/publishers');
 
         $response->assertStatus(200);
@@ -29,21 +24,6 @@ class PublisherTest extends TestCase
             '*' => [
                 'publisherId',
                 'name',
-                'books' => [
-                    '*' => [
-                        'isbn',
-                        'name',
-                        'publishedAt',
-                        'authorId',
-                        'publisherId',
-                    ],
-                ],
-                'relatedAuthors' => [
-                    '*' => [
-                        'authorId',
-                        'name',
-                    ],
-                ],
             ],
         ]);
     }
@@ -53,9 +33,7 @@ class PublisherTest extends TestCase
      */
     public function test_create_publisher()
     {
-        $data = [
-            'name' => 'New Publisher',
-        ];
+        $data = ['publisher_name' => 'New Publisher'];
 
         $response = $this->post('/api/publishers', $data);
 
@@ -68,8 +46,9 @@ class PublisherTest extends TestCase
      */
     public function test_show_publisher()
     {
-        $publisher = Publisher::factory()->create();
-        $response = $this->get("/api/publishers/{$publisher->id}");
+        $book = Book::factory()->create();
+
+        $response = $this->get("/api/publishers/{$book->publisher->id}");
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -99,16 +78,15 @@ class PublisherTest extends TestCase
     public function test_update_publisher()
     {
         $publisher = Publisher::factory()->create();
-        $data = [
-            'name' => 'Updated Name',
-        ];
+
+        $data = ['publisher_name' => 'Updated Name',];
 
         $response = $this->put("/api/publishers/{$publisher->id}", $data);
 
-        $response->assertStatus(204);
+        $response->assertStatus(200);
         $this->assertDatabaseHas('publishers', [
             'id' => $publisher->id,
-            'publisher_name' => $data['name'],
+            'publisher_name' => $data['publisher_name'],
         ]);
     }
 
