@@ -3,27 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publisher;
-use App\Services\PublisherService;
 use App\Http\Requests\StorePublisherRequest;
 use App\Http\Requests\UpdatePublisherRequest;
 use App\Http\Resources\PublisherResource;
 
 class PublisherController extends Controller
 {
-    protected $publisherService;
-
-    public function __construct(PublisherService $publisherService)
-    {
-        $this->publisherService = $publisherService;
-    }
-
     /**
      * @return PublisherResource
      */
     public function index()
     {
-        $publishers = $this->publisherService->getPublishers();
-        return PublisherResource::collection($publishers);
+        return PublisherResource::collection(Publisher::all());
     }
 
     /**
@@ -32,8 +23,9 @@ class PublisherController extends Controller
      */
     public function store(StorePublisherRequest $request)
     {
-        $this->publisherService->storeRegister($request->name);
-        return response(null, 201);
+        $publisherData = $request->validated();
+        $publisher = Publisher::createPublisher($publisherData);
+        return response($publisher, 201);
     }
 
     /**
@@ -42,7 +34,7 @@ class PublisherController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        $publisherDetail = $this->publisherService->getPublisherDetail($publisher);
+        $publisherDetail = $publisher->load(['books', 'authors']);
         return  new PublisherResource($publisherDetail);
     }
 
@@ -54,8 +46,9 @@ class PublisherController extends Controller
      */
     public function update(UpdatePublisherRequest $request, Publisher $publisher)
     {
-        $this->publisherService->updatePublisher($request->name, $publisher);
-        return response(null, 204);
+        $publisherData = $request->validated();
+        $updatedPublisher = $publisher->updatePublisher($publisherData);
+        return response($updatedPublisher, 200);
     }
 
     /**
@@ -64,7 +57,7 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        $this->publisherService->deletePublisher($publisher);
+        $publisher->delete();
         return response(null, 204);
     }
 }
