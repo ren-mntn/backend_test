@@ -3,28 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
-use App\Services\AuthorService;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use App\Http\Resources\AuthorResource;
 
 class AuthorController extends Controller
 {
-
-    protected $authorService;
-
-    public function __construct(AuthorService $authorService)
-    {
-        $this->authorService = $authorService;
-    }
-
     /**
      * @return AuthorResource
      */
     public function index()
     {
-        $authors = $this->authorService->getAuthors();
-        return AuthorResource::collection($authors);
+        return AuthorResource::collection(Author::all());
     }
 
     /**
@@ -33,8 +23,9 @@ class AuthorController extends Controller
      */
     public function store(StoreAuthorRequest $request)
     {
-        $this->authorService->storeRegister($request->authorName);
-        return response(null, 201);
+        $authorData = $request->validated();
+        $book = Author::createAuthor($authorData);
+        return response($book, 201);
     }
 
     /**
@@ -43,7 +34,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        $authorDetail = $this->authorService->getAuthorDetail($author);
+        $authorDetail = $author->load(['books', 'publishers']);
         return  new AuthorResource($authorDetail);
     }
 
@@ -54,8 +45,9 @@ class AuthorController extends Controller
      */
     public function update(UpdateAuthorRequest $request, Author $author)
     {
-        $this->authorService->updateAuthor($request->authorName, $author);
-        return response(null, 204);
+        $authorData = $request->validated();
+        $updatedAuthor = $author->updateAuthor($authorData);
+        return response($updatedAuthor, 200);
     }
 
     /**
@@ -64,7 +56,7 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        $this->authorService->deleteAuthor($author);
+        $author->delete();
         return response(null, 204);
     }
 }
