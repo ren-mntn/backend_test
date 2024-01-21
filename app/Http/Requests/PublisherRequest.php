@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePublisherRequest extends FormRequest
+class PublisherRequest extends FormRequest
 {
     /**
      * @return bool

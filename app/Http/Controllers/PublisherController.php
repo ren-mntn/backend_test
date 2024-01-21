@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publisher;
-use App\Http\Requests\StorePublisherRequest;
-use App\Http\Requests\UpdatePublisherRequest;
+use App\Http\Requests\PublisherRequest;
 use App\Http\Resources\PublisherResource;
 
 class PublisherController extends Controller
@@ -18,10 +17,10 @@ class PublisherController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\StorePublisherRequest  $request
+     * @param  \App\Http\Requests\PublisherRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePublisherRequest $request)
+    public function store(PublisherRequest $request)
     {
         $publisherData = $request->validated();
         $publisher = Publisher::createPublisher($publisherData);
@@ -40,11 +39,11 @@ class PublisherController extends Controller
 
 
     /**
-     * @param  \App\Http\Requests\UpdatePublisherRequest  $request
+     * @param  \App\Http\Requests\PublisherRequest  $request
      * @param  \App\Models\Publisher  $publisher
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePublisherRequest $request, Publisher $publisher)
+    public function update(PublisherRequest $request, Publisher $publisher)
     {
         $publisherData = $request->validated();
         $updatedPublisher = $publisher->updatePublisher($publisherData);
