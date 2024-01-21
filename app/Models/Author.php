@@ -23,8 +23,8 @@ class Author extends Model
     public $timestamps = false;
 
     /**
-     * @param array $validatedData
-     * @return self 作成された書籍インスタンス
+     * @param array $authorData
+     * @return self 作成された著者インスタンス
      */
     public static function createAuthor(array $authorData)
     {
@@ -32,8 +32,8 @@ class Author extends Model
     }
 
     /**
-     * @param array $authorName
-     * @return self 更新された書籍インスタンス
+     * @param array $authorData
+     * @return self 更新された著者インスタンス
      */
     public function updateAuthor(array $authorData)
     {
