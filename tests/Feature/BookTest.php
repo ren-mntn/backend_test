@@ -50,21 +50,17 @@ class BookTest extends TestCase
         $response = $this->get('/api/books');
 
         $response->assertStatus(200);
-        $response->assertJsonStructure([
-            '*' => [
-                'isbn',
-                'name',
-                'publishedAt',
-                'author' => [
+        $response->assertJsonStructure(
+            [
+                '*' => [
+                    'isbn',
+                    'name',
+                    'publishedAt',
                     'authorId',
-                    'name',
-                ],
-                'publisher' => [
                     'publisherId',
-                    'name',
                 ],
             ],
-        ]);
+        );
     }
 
     /**
@@ -204,5 +200,4 @@ class BookTest extends TestCase
 
         $response->assertStatus(404);
     }
-
 }
