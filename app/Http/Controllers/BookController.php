@@ -6,15 +6,16 @@ use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\BookWithRelationsIdsResource;
 
 class BookController extends Controller
 {
     /**
-     * @return BookResource
+     * @return BookWithRelationsIdsResource
      */
     public function index()
     {
-        return BookResource::collection(Book::all());
+        return BookWithRelationsIdsResource::collection(Book::all());
     }
 
     /**
