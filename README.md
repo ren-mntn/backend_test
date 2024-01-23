@@ -53,25 +53,99 @@ php artisan serve
   - PUT /api/publisher/{id} - 特定の出版社を更新
   - DELETE /api/publisher/{id} - 特定の出版社を削除
 
-## 以下は著者のリストのJSONサンプルです。(GET /api/author/1)
+### 著者の作成　(POST /api/authors)
+- 必要なフィールド:`author_name`
+### 以下は著者のリストのJSONサンプルです。(GET /api/authors)
+```
+[
+    {
+        "authorId": 1,
+        "name": "Dr. Sarah Becker Jr."
+    }
+]
+```
+### 以下は著者の詳細のJSONサンプルです。(GET /api/authors/{id})
 ```
 {
-    'authorId',
-    'name',
-    'books' : [
-        '*' : [
-            'isbn',
-            'name',
-            'publishedAt',
-            'authorId',
-            'publisherId',
-        ],
+    "authorId": 1,
+    "name": "Dr. Sarah Becker Jr.",
+    "books": [
+        {
+            "isbn": "9782896909292",
+            "name": "Ut quos qui necessitatibus beatae.",
+            "publishedAt": "2004-09-24T00:00:00.000000Z",
+            "authorId": 1,
+            "publisherId": 1
+        }
     ],
-    'relatedPublishers' : [
-        '*' : [
-            'publisherId',
-            'name',
-        ],
+    "relatedPublishers": [
+        {
+            "publisherId": 1,
+            "name": "Alberta Marquardt"
+        }
+    ]
+}
+```
+### 出版社の作成　(POST /api/publishers)
+- 必要なフィールド:`publisher_name`
+## 以下は出版社のリストのJSONサンプルです。(GET /api/publishers)
+```
+[
+    {
+        "publisherId": 1,
+        "name": "Alberta Marquardt"
+    }
+]
+```
+## 以下は出版社の詳細のJSONサンプルです。(GET /api/publishers/{id})
+```
+{
+    "publisherId": 1,
+    "name": "Alberta Marquardt",
+    "books": [
+        {
+            "isbn": "9782896909292",
+            "name": "Ut quos qui necessitatibus beatae.",
+            "publishedAt": "2004-09-24",
+            "authorId": 1,
+            "publisherId": 1
+        }
     ],
+    "relatedAuthors": [
+        {
+            "authorId": 1,
+            "name": "Dr. Sarah Becker Jr."
+        }
+    ]
+}
+```
+### 書籍の作成　(POST /api/books)
+- 必要なフィールド: `isbn`, `book_name`, `published_at`, `author_id`, `publisher_id`
+## 以下は書籍のリストのJSONサンプルです。(GET /api/books)
+```
+[
+    {
+        "isbn": "9780258630266",
+        "name": "Quisquam ut porro voluptate odio eum earum.",
+        "publishedAt": "2000-06-01",
+        "authorId": 3,
+        "publisherId": 3
+    }
+]
+```
+## 以下は書籍の詳細のJSONサンプルです。(GET /api/books/9780258630266)
+```
+{
+    "isbn": "9780258630266",
+    "name": "Quisquam ut porro voluptate odio eum earum.",
+    "publishedAt": "2000-06-01",
+    "author": {
+        "authorId": 3,
+        "name": "Sheldon Herzog"
+    },
+    "publisher": {
+        "publisherId": 3,
+        "name": "Guadalupe Nienow"
+    }
 }
 ```
