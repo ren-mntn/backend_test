@@ -135,7 +135,7 @@ php artisan db:seed
 ```
 ### 書籍の作成　(POST /api/books)
 - 必要なフィールド: `isbn`, `book_name`, `published_at`, `author_id`, `publisher_id`
-## 以下は書籍のリストのJSONサンプルです。(GET /api/books)
+### 以下は書籍のリストのJSONサンプルです。(GET /api/books)
 ```
 [
     {
