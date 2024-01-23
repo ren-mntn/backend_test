@@ -88,7 +88,7 @@ php artisan serve
 ```
 ### 出版社の作成　(POST /api/publishers)
 - 必要なフィールド:`publisher_name`
-## 以下は出版社のリストのJSONサンプルです。(GET /api/publishers)
+### 以下は出版社のリストのJSONサンプルです。(GET /api/publishers)
 ```
 [
     {
@@ -97,7 +97,7 @@ php artisan serve
     }
 ]
 ```
-## 以下は出版社の詳細のJSONサンプルです。(GET /api/publishers/{id})
+### 以下は出版社の詳細のJSONサンプルです。(GET /api/publishers/{id})
 ```
 {
     "publisherId": 1,
@@ -133,7 +133,7 @@ php artisan serve
     }
 ]
 ```
-## 以下は書籍の詳細のJSONサンプルです。(GET /api/books/9780258630266)
+### 以下は書籍の詳細のJSONサンプルです。(GET /api/books/9780258630266)
 ```
 {
     "isbn": "9780258630266",
@@ -149,3 +149,39 @@ php artisan serve
     }
 }
 ```
+## バリデーションルール
+### 書籍 (Books)
+- isbn:
+  - 必須項目
+  - 文字列
+  - 書籍の国際標準図書番号（ISBN）の形式に適合する必要があります。
+  - ユニーク（既存の書籍と重複してはなりません）
+- book_name:
+  - 必須項目
+  - 文字列
+  - 最大255文字まで
+- published_at:
+  - 必須項目
+  - 日付
+  - Y-m-d 形式である必要があります（例: 2021-03-15）
+- author_id:
+  - 必須項目
+  - 整数
+  - 既存の著者IDと関連している必要があります。
+- publisher_id:
+  - 必須項目
+  - 整数
+  - 既存の出版社IDと関連している必要があります。
+### 著者 (Authors)
+- author_name:
+  - 必須項目
+  - 文字列
+  - 最大255文字まで
+  - HTMLタグは含まれていてはなりません。
+### 出版社 (Publishers)
+- publisher_name:
+  - 必須項目
+  - 文字列
+  - 最大255文字まで
+  - ユニーク（既存の出版社と重複してはなりません）
+  - HTMLタグは含まれていてはなりません。
