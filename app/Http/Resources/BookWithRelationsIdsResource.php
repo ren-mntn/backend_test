@@ -15,7 +15,7 @@ class BookWithRelationsIdsResource extends JsonResource
         return [
             'isbn' => $this->isbn,
             'name' => $this->book_name,
-            'publishedAt' => $this->published_at,
+            'publishedAt' => $this->published_at->format('Y-m-d'),
             'authorId' => $this->author_id,
             'publisherId' => $this->publisher_id,
         ];
